@@ -130,11 +130,21 @@ function startPrediction() {
 
             const formData =
                 new FormData();
+            
+            const selectedModel =
+                document.querySelector(
+                    'input[name="model"]:checked'
+                ).value;
 
             formData.append(
                 'image',
                 blob,
                 'frame.jpg'
+            );
+
+            formData.append(
+                'model',
+                selectedModel
             );
 
             try {

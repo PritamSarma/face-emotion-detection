@@ -1,24 +1,36 @@
 import cv2
 import numpy as np
 
-from model_loader import model
+from model_loader import (
+
+    cnn_v1_model,
+
+    cnn_v2_model
+)
 
 # =========================
 # EMOTION LABELS
 # =========================
 
 emotion_labels = [
+
     'Angry',
+
     'Disgust',
+
     'Fear',
+
     'Happy',
+
     'Neutral',
+
     'Sad',
+
     'Surprise'
 ]
 
 # =========================
-# PREPROCESS FACE
+# PREPROCESS IMAGE
 # =========================
 
 def preprocess_face(face_img):
@@ -30,41 +42,74 @@ def preprocess_face(face_img):
 
     gray = cv2.equalizeHist(gray)
 
-    gray = cv2.resize(gray, (48, 48))
+    gray = cv2.resize(
+        gray,
+        (48, 48)
+    )
 
     gray = gray.astype("float32") / 255.0
 
-    gray = np.expand_dims(gray, axis=0)
+    gray = np.expand_dims(
+        gray,
+        axis=0
+    )
 
-    gray = np.expand_dims(gray, axis=-1)
+    gray = np.expand_dims(
+        gray,
+        axis=-1
+    )
 
     return gray
+
+# =========================
+# SELECT MODEL
+# =========================
+
+def get_model(model_name):
+
+    if model_name == "v2":
+
+        return cnn_v2_model
+
+    return cnn_v1_model
 
 # =========================
 # PREDICT EMOTION
 # =========================
 
-def predict_emotion(face_img):
+def predict_emotion(
+    face_img,
+    model_name="v1"
+):
 
-    processed = preprocess_face(face_img)
+    model = get_model(model_name)
+
+    processed = preprocess_face(
+        face_img
+    )
 
     prediction = model.predict(
         processed,
         verbose=0
     )[0]
 
-    max_index = np.argmax(prediction)
+    max_index = np.argmax(
+        prediction
+    )
 
-    emotion = emotion_labels[max_index]
+    emotion = emotion_labels[
+        max_index
+    ]
 
     confidence = float(
         prediction[max_index] * 100
     )
 
-    # Probability dictionary
     probabilities = {}
 
-    for i, label in enumerate(emotion_labels):
+    for i, label in enumerate(
+        emotion_labels
+    ):
 
         probabilities[label] = round(
             float(prediction[i] * 100),
@@ -72,7 +117,15 @@ def predict_emotion(face_img):
         )
 
     return {
+
         "emotion": emotion,
-        "confidence": round(confidence, 2),
-        "probabilities": probabilities
+
+        "confidence": round(
+            confidence,
+            2
+        ),
+
+        "probabilities": probabilities,
+
+        "model": model_name
     }

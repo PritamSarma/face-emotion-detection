@@ -102,7 +102,15 @@ def predict():
 
     face_img = frame[y:y+h, x:x+w]
 
-    result = predict_emotion(face_img)
+    model_name = request.form.get(
+        'model',
+        'v1'
+    )
+
+    result = predict_emotion(
+        face_img,
+        model_name
+    )
 
     # Add bounding box
     result["box"] = {
@@ -111,8 +119,6 @@ def predict():
         "w": int(w),
         "h": int(h)
     }
-
-    print(result)
 
     return jsonify(result)
 
