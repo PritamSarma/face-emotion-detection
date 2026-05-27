@@ -255,6 +255,14 @@ plt.legend()
 
 plt.grid(True)
 
+accuracy_graph_path = os.path.join(
+    BASE_DIR,
+    'evaluation',
+    'custom_accuracy.png'
+)
+
+plt.savefig(accuracy_graph_path)
+
 plt.show()
 
 # =========================
@@ -282,5 +290,13 @@ plt.ylabel('Loss')
 plt.legend()
 
 plt.grid(True)
+
+loss_graph_path = os.path.join(
+    BASE_DIR,
+    'evaluation',
+    'custom_loss.png'
+)
+
+plt.savefig(loss_graph_path)
 
 plt.show()

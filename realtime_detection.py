@@ -7,7 +7,7 @@ from collections import deque
 # LOAD MODEL
 # =========================
 
-model = load_model('model/emotion_model.keras')
+model = load_model('model/custom_cnn.keras')
 
 # =========================
 # EMOTION LABELS

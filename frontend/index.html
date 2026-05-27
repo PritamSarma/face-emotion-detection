@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Emotion Detection</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Real-Time Emotion Detection</h1>
+
+        <!-- Controls -->
+
+        <div class="controls">
+
+            <button id="startBtn">
+                Start Camera
+            </button>
+
+            <button id="stopBtn">
+                Stop Camera
+            </button>
+
+        </div>
+
+        <!-- Model Toggle -->
+
+        <div class="model-select">
+
+            <label>
+
+                <input type="radio"
+                       name="model"
+                       value="custom"
+                       checked>
+
+                Custom CNN
+
+            </label>
+
+            <label>
+
+                <input type="radio"
+                       name="model"
+                       value="mobilenet">
+
+                MobileNetV2
+
+            </label>
+
+        </div>
+
+        <!-- Video -->
+
+        <video id="video"
+               autoplay
+               playsinline>
+        </video>
+
+        <!-- Hidden Canvas -->
+
+        <canvas id="canvas"></canvas>
+
+        <!-- Prediction -->
+
+        <div class="prediction">
+
+            <h2 id="emotion">
+                Emotion: -
+            </h2>
+
+            <h3 id="confidence">
+                Confidence: -
+            </h3>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

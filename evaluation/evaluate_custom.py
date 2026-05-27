@@ -108,4 +108,12 @@ plt.xlabel('Predicted Label')
 
 plt.ylabel('True Label')
 
+save_path = os.path.join(
+    BASE_DIR,
+    'evaluation',
+    'confusion_matrix_custom.png'
+)
+
+plt.savefig(save_path)
+
 plt.show()
