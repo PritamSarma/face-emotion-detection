@@ -49,6 +49,7 @@ ENV/
 
 dataset/
 haarcascade/
+*.csv
 
 # Uncomment if you want to upload small sample dataset
 # !dataset/sample/
