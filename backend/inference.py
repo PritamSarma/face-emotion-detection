@@ -18,12 +18,15 @@ emotion_labels = [
 ]
 
 # =========================
-# PREPROCESS IMAGE
+# PREPROCESS FACE
 # =========================
 
 def preprocess_face(face_img):
 
-    gray = cv2.cvtColor(face_img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(
+        face_img,
+        cv2.COLOR_BGR2GRAY
+    )
 
     gray = cv2.equalizeHist(gray)
 
@@ -48,17 +51,28 @@ def predict_emotion(face_img):
     prediction = model.predict(
         processed,
         verbose=0
-    )
+    )[0]
 
     max_index = np.argmax(prediction)
 
     emotion = emotion_labels[max_index]
 
     confidence = float(
-        prediction[0][max_index] * 100
+        prediction[max_index] * 100
     )
+
+    # Probability dictionary
+    probabilities = {}
+
+    for i, label in enumerate(emotion_labels):
+
+        probabilities[label] = round(
+            float(prediction[i] * 100),
+            2
+        )
 
     return {
         "emotion": emotion,
-        "confidence": round(confidence, 2)
+        "confidence": round(confidence, 2),
+        "probabilities": probabilities
     }

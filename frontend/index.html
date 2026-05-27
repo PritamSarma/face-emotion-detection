@@ -65,13 +65,12 @@
         <!-- Video -->
 
         <video id="video"
-               autoplay
-               playsinline>
+            autoplay
+            playsinline>
         </video>
 
-        <!-- Hidden Canvas -->
-
-        <canvas id="canvas"></canvas>
+        <!-- Hidden processing canvas -->
+        <canvas id="canvas" style="display:none;"></canvas>
 
         <!-- Prediction -->
 
@@ -87,6 +86,60 @@
 
         </div>
 
+        <!-- Probability Bars -->
+
+        <div class="bars-container">
+
+            <div class="bar">
+                <span>Angry</span>
+                <div class="progress">
+                    <div id="angryBar"></div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <span>Disgust</span>
+                <div class="progress">
+                    <div id="disgustBar"></div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <span>Fear</span>
+                <div class="progress">
+                    <div id="fearBar"></div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <span>Happy</span>
+                <div class="progress">
+                    <div id="happyBar"></div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <span>Neutral</span>
+                <div class="progress">
+                    <div id="neutralBar"></div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <span>Sad</span>
+                <div class="progress">
+                    <div id="sadBar"></div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <span>Surprise</span>
+                <div class="progress">
+                    <div id="surpriseBar"></div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script src="script.js"></script>

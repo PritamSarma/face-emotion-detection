@@ -104,6 +104,16 @@ def predict():
 
     result = predict_emotion(face_img)
 
+    # Add bounding box
+    result["box"] = {
+        "x": int(x),
+        "y": int(y),
+        "w": int(w),
+        "h": int(h)
+    }
+
+    print(result)
+
     return jsonify(result)
 
 # =========================

@@ -2,13 +2,17 @@ const video = document.getElementById('video');
 
 const canvas = document.getElementById('canvas');
 
-const emotionText = document.getElementById('emotion');
+const emotionText =
+    document.getElementById('emotion');
 
-const confidenceText = document.getElementById('confidence');
+const confidenceText =
+    document.getElementById('confidence');
 
-const startBtn = document.getElementById('startBtn');
+const startBtn =
+    document.getElementById('startBtn');
 
-const stopBtn = document.getElementById('stopBtn');
+const stopBtn =
+    document.getElementById('stopBtn');
 
 let stream = null;
 
@@ -22,9 +26,10 @@ startBtn.addEventListener('click', async () => {
 
     try {
 
-        stream = await navigator.mediaDevices.getUserMedia({
-            video: true
-        });
+        stream =
+            await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
 
         video.srcObject = stream;
 
@@ -36,6 +41,7 @@ startBtn.addEventListener('click', async () => {
 
         alert("Could not access webcam.");
     }
+
 });
 
 // =========================
@@ -46,17 +52,50 @@ stopBtn.addEventListener('click', () => {
 
     if (stream) {
 
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach(track =>
+            track.stop()
+        );
 
         video.srcObject = null;
     }
 
     clearInterval(predictionInterval);
 
-    emotionText.innerText = "Emotion: -";
+    emotionText.innerText =
+        "Emotion: -";
 
-    confidenceText.innerText = "Confidence: -";
+    confidenceText.innerText =
+        "Confidence: -";
+
+    resetBars();
+
 });
+
+// =========================
+// RESET BARS
+// =========================
+
+function resetBars() {
+
+    const emotions = [
+        'angry',
+        'disgust',
+        'fear',
+        'happy',
+        'neutral',
+        'sad',
+        'surprise'
+    ];
+
+    emotions.forEach(emotion => {
+
+        document.getElementById(
+            `${emotion}Bar`
+        ).style.width = '0%';
+
+    });
+
+}
 
 // =========================
 // START PREDICTION LOOP
@@ -64,15 +103,19 @@ stopBtn.addEventListener('click', () => {
 
 function startPrediction() {
 
+    clearInterval(predictionInterval);
+
     predictionInterval = setInterval(async () => {
 
         if (!video.videoWidth) return;
 
+        // Processing canvas
         canvas.width = video.videoWidth;
 
         canvas.height = video.videoHeight;
 
-        const ctx = canvas.getContext('2d');
+        const ctx =
+            canvas.getContext('2d');
 
         ctx.drawImage(
             video,
@@ -82,9 +125,11 @@ function startPrediction() {
             canvas.height
         );
 
+        // Convert frame to image
         canvas.toBlob(async (blob) => {
 
-            const formData = new FormData();
+            const formData =
+                new FormData();
 
             formData.append(
                 'image',
@@ -94,21 +139,69 @@ function startPrediction() {
 
             try {
 
-                const response = await fetch(
-                    'http://127.0.0.1:5000/predict',
-                    {
-                        method: 'POST',
-                        body: formData
-                    }
-                );
+                const response =
+                    await fetch(
+                        'http://127.0.0.1:5000/predict',
+                        {
+                            method: 'POST',
+                            body: formData
+                        }
+                    );
 
-                const data = await response.json();
+                const data =
+                    await response.json();
+
+                // =========================
+                // UPDATE TEXT
+                // =========================
 
                 emotionText.innerText =
                     `Emotion: ${data.emotion}`;
 
                 confidenceText.innerText =
                     `Confidence: ${data.confidence}%`;
+
+                // =========================
+                // UPDATE PROBABILITY BARS
+                // =========================
+
+                if (data.probabilities) {
+
+                    document.getElementById(
+                        'angryBar'
+                    ).style.width =
+                        `${data.probabilities.Angry}%`;
+
+                    document.getElementById(
+                        'disgustBar'
+                    ).style.width =
+                        `${data.probabilities.Disgust}%`;
+
+                    document.getElementById(
+                        'fearBar'
+                    ).style.width =
+                        `${data.probabilities.Fear}%`;
+
+                    document.getElementById(
+                        'happyBar'
+                    ).style.width =
+                        `${data.probabilities.Happy}%`;
+
+                    document.getElementById(
+                        'neutralBar'
+                    ).style.width =
+                        `${data.probabilities.Neutral}%`;
+
+                    document.getElementById(
+                        'sadBar'
+                    ).style.width =
+                        `${data.probabilities.Sad}%`;
+
+                    document.getElementById(
+                        'surpriseBar'
+                    ).style.width =
+                        `${data.probabilities.Surprise}%`;
+                }
 
             } catch (error) {
 
