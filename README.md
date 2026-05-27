@@ -344,7 +344,7 @@ Possible future enhancements:
 
 # Screenshots
 
-Add screenshots here:
+Screenshots will be added later
 
 * Main UI
 * Probability bars
@@ -380,9 +380,3 @@ making it the preferred production model for this application.
 # Author
 
 Pritam Sarma
-
----
-
-# License
-
-This project is for educational and research purposes.
