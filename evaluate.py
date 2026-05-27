@@ -1,0 +1,94 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+from sklearn.metrics import (
+    confusion_matrix,
+    classification_report
+)
+
+# =========================
+# LOAD MODEL
+# =========================
+
+model = load_model('model/emotion_model.keras')
+
+# =========================
+# TEST DATA
+# =========================
+
+test_dir = 'dataset/test'
+
+test_datagen = ImageDataGenerator(
+    rescale=1./255
+)
+
+test_generator = test_datagen.flow_from_directory(
+    test_dir,
+    target_size=(48, 48),
+    color_mode='grayscale',
+    batch_size=64,
+    class_mode='categorical',
+    shuffle=False
+)
+
+# =========================
+# CLASS LABELS
+# =========================
+
+class_labels = list(test_generator.class_indices.keys())
+
+print("\nClass Labels:")
+print(class_labels)
+
+# =========================
+# PREDICTIONS
+# =========================
+
+predictions = model.predict(test_generator)
+
+y_pred = np.argmax(predictions, axis=1)
+
+y_true = test_generator.classes
+
+# =========================
+# CLASSIFICATION REPORT
+# =========================
+
+print("\nClassification Report:\n")
+
+report = classification_report(
+    y_true,
+    y_pred,
+    target_names=class_labels
+)
+
+print(report)
+
+# =========================
+# CONFUSION MATRIX
+# =========================
+
+cm = confusion_matrix(y_true, y_pred)
+
+plt.figure(figsize=(10,8))
+
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt='d',
+    cmap='Blues',
+    xticklabels=class_labels,
+    yticklabels=class_labels
+)
+
+plt.title('Confusion Matrix')
+
+plt.xlabel('Predicted Label')
+
+plt.ylabel('True Label')
+
+plt.show()
