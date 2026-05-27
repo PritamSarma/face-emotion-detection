@@ -17,8 +17,10 @@ import os
 # DATASET PATHS
 # =========================
 
-train_dir = 'dataset/train'
-test_dir = 'dataset/test'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+train_dir = os.path.join(BASE_DIR, 'dataset/train')
+test_dir = os.path.join(BASE_DIR, 'dataset/test')
 
 # =========================
 # IMAGE PREPROCESSING
@@ -213,7 +215,8 @@ os.makedirs("model", exist_ok=True)
 # SAVE MODEL
 # =========================
 
-model.save("model/emotion_model.keras")
+model_path = os.path.join(BASE_DIR, 'model/custom_cnn.keras')
+model.save(model_path)
 
 print("\nModel Saved Successfully!")
 

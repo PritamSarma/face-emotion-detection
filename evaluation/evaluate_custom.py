@@ -1,6 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -14,13 +21,23 @@ from sklearn.metrics import (
 # LOAD MODEL
 # =========================
 
-model = load_model('model/emotion_model.keras')
+model_path = os.path.join(
+    BASE_DIR,
+    'model',
+    'custom_cnn.keras'
+)
+
+model = load_model(model_path)
 
 # =========================
 # TEST DATA
 # =========================
 
-test_dir = 'dataset/test'
+test_dir = os.path.join(
+    BASE_DIR,
+    'dataset',
+    'test'
+)
 
 test_datagen = ImageDataGenerator(
     rescale=1./255
